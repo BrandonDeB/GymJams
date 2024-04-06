@@ -1,1 +1,1 @@
-# StudySpot
+# GymJam
