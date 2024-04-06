@@ -30,39 +30,44 @@ public class AuthController {
             .build();
  
     @GetMapping(value="/login")
-    public String login(@RequestParam("name") String name, @RequestParam("password") String password, HttpSession session){
+    public String login(@RequestParam("name") String name, @RequestParam("password") String password, HttpSession session, HttpServletResponse response){
         if (logins.get(name).equals(password)) {
             session.setAttribute("username", name);
             session.setAttribute("password", password);
+            try {
+                response.sendRedirect("http://localhost:8080/scrollingpage.html");
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             return logins.get(name);
         } else {return "loginFailed";}
-    }
-
-    @GetMapping("/user/registration")
-    public String showRegistrationForm(WebRequest request, Model model) {
-        UserDto userDto = new UserDto();
-        model.addAttribute("user", userDto);
-        return "registration";
     }
 
     @GetMapping(value="/signup")
     public String signup(@RequestParam("name") String name, @RequestParam("password") String password, HttpServletResponse response) {
         if (logins.containsKey(name)) {
             try {
-                response.sendRedirect("LoginPage.html");
+                response.sendRedirect("http://localhost:8080/loginpage.html");
             } catch (IOException e) {
                 e.printStackTrace();
             }
             return "Account Already Exists";
         } else { 
             try {
-                response.sendRedirect("LoginPage.html");
+                response.sendRedirect("http://localhost:8080/loginpage.html");
             } catch (IOException e) {
                 e.printStackTrace();
             }
             logins.put(name, password);
             return "success";
         }
+    }
+
+    @GetMapping(value="get-current-user")
+    public String currentUser(HttpSession session){
+        System.out.println((String) session.getAttribute("name"));
+        return (String) session.getAttribute("name").toString();
     }
     
     @GetMapping(value = "get-user-exercises")

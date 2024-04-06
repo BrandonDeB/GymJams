@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang ="en>
+
+<head>
+    <meta charset=UTF-8">
+    <title>GYMJAM</title>
+</head>
+
+<script>
+    function addWorkout() {
+        var workout = document.createElement("input");
+        workout.type = "text";
+        workout.placeholder = "Enter Workout";
+
+        var reps = document.createElement("input");
+        reps.type = "text";
+        reps.placeholder = "Enter Number of Reps";
+
+        var sets = document.createElement("input");
+        sets.type = "text";
+        sets.placeholder = "Enter Number of Sets";
+
+        var weight = document.createElement("input");
+        weight.type = "text";
+        weight.placeholder = "Enter weight (in lbs)";
+
+        var container = document.createElement("div");
+
+        container.appendChild(workout);
+        container.appendChild(reps);
+        container.appendChild(weight);
+        container.appendChild(sets);
+
+        var mainContainer = document.getElementById("textBoxContainer");
+            mainContainer.appendChild(container);
+
+    }
+
+</script>
+
+<body>
+
+    <div class= "wrapper">
+    <form id = 'workoutForm' action="http://localhost:8080/api/login" target = _self>
+        <h2>Add your workouts here</h2>
+    <div id="textBoxContainer">
+        <!-- Text boxes will be added here -->
+    </div>
+    <button type="button" onclick="addWorkout()">Add Workout</button>
+    
+    <div class = 'input-box'>
+        <input type = 'text' placeholder = 'Spotify Playlist Link'
+        required>
+    
+        <button type="submit" class="btn">Post Your Jam</button>
+
+    </div>
+    </form>
+    </div>
+
+</body>
