@@ -42,20 +42,41 @@
     //     }
     // }
     }
+
 </script>
 <head>
     <meta charset=UTF-8">
     <title>GYMJAM</title>
+
+    <style>
+        .movingbtn{
+            position:absolute;
+            bottom:0;
+        }
+    </style>
+
 </head>
 
 <body>
 
+
     <h2 id="username">Username</h2>
-    <div id= "workout-holder">
-        <div id="js-content">
+    <div class= "workout-holder">
+        <div class="js-content">
             <!-- content will be loaded here -->
+        
 
         </div>
+        <div class="movingbtn">
+        <a href="addWorkout.html">
+            <button type="button">Move to Workout</button></a>
+
+            <button type="button" onclick="retreivePost()">Next Post</button>
+
+        <a href="profilepage.html">
+            <button type="button">Look at profile</button></a>
+        </div>
+
 
     </div>
 
