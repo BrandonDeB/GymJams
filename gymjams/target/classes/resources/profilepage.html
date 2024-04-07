@@ -4,17 +4,25 @@
 <head>
     <meta charset=UTF-8">
     <title>GYMJAM</title>
+
+    <style>
+        .backbtn{
+            position:absolute;
+            bottom:0;
+        }
+    </style>
 </head>
 
 <script>
 //When the page is opened
 document.addEventListener("DOMContentLoaded", async function() {
     try {
-        const response = await fetch("http://localhost:8080/get-user-exercises");
-        const exercises = await response.json();
+        
+        const userfetch = await fetch("http://localhost:8080/api/get-current-user");
+        const user = await userfetch.text();
 
-        const userfetch = await fetch("http://localhost:8080/get-current-user");
-        const user = await userfetch.text;
+        const response = await fetch("http://localhost:8080/api/get-user-exercises?name="+user);
+        const exercises = await response.json();
 
         //Pull Username from backend
         const usernameElement = document.getElementById("username");
