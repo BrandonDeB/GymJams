@@ -5,8 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication()
-public class SpotifystatsApplication {
+public class GymJamsApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(SpotifystatsApplication.class, args);
+		SpringApplication.run(GymJamsApplication.class, args);
 	}
 }

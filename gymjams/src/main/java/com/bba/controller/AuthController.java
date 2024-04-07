@@ -31,17 +31,27 @@ public class AuthController {
  
     @GetMapping(value="/login")
     public String login(@RequestParam("name") String name, @RequestParam("password") String password, HttpSession session, HttpServletResponse response){
-        if (logins.get(name).equals(password)) {
-            session.setAttribute("username", name);
-            session.setAttribute("password", password);
+        if(logins.containsKey(name)) {
+            if (logins.get(name).equals(password)) {
+                session.setAttribute("username", name);
+                session.setAttribute("password", password);
+                try {
+                    response.sendRedirect("http://localhost:8080/scrollingpage.html");
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                return logins.get(name);
+            } else {return "loginFailed";}
+        } else {
             try {
-                response.sendRedirect("http://localhost:8080/scrollingpage.html");
+                response.sendRedirect("http://localhost:8080/loginpage.html");
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            return logins.get(name);
-        } else {return "loginFailed";}
+            return "Username does not exist";
+        }
     }
 
     @GetMapping(value="/signup")
