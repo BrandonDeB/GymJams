@@ -1,22 +1,16 @@
 package com.bba.controller;
 
-import java.util.Date;
-
-public class Exercise {
+public class Exercise{
     public String name;
     public int weight;
     public int reps;
     public int sets;
-    public Date date;
-    public String playlistLink;
 
-    public Exercise(String name, int weight, int reps, int sets, Date date, String playlistLink) {
+    public Exercise(String name, int weight, int reps, int sets) {
         this.name = name;
         this.weight = weight;
         this.reps = reps;
         this.sets = sets;
-        this.date = date;
-        this.playlistLink = playlistLink;
     }
 
     // String getName() {
