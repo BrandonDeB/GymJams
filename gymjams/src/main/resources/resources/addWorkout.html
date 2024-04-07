@@ -4,14 +4,7 @@
 <head>
     <meta charset=UTF-8">
     <title>GYMJAM</title>
-
-    <style>
-        .backbtn{
-            position:absolute;
-            bottom:0;
-        }
-    </style>
-
+    <link rel="stylesheet" href="addWorkout.css">
 </head>
 
 <script>
@@ -69,24 +62,26 @@
 
     <div class= "wrapper">
     <form id = 'workoutForm' action="http://localhost:8080/api/add-user-workout" target = _self>
-        <h2>Add your workouts here</h2>
+        <h2>Add a JamSesh</h2>
     <div id="textBoxContainer">
         <!-- Text boxes will be added here -->
     </div>
-    <button type="button" onclick="addExercise()">Add Exercise</button>
-    <button type="button" onclick="remExercise('exercise' + counter)">Remove Exercise</button>
+    <div class="btn">
+    <button class="addbtn" type="button" onclick="addExercise()">Add Exercise</button>
+    <button class="rembtn" type="button" onclick="remExercise('exercise' + counter)">Remove Exercise</button>
+    </div>
     <div class = 'input-box'>
-        <input name="link" type = 'text' placeholder = 'Spotify Playlist Link'
+        <input name="link" type = 'text' placeholder = 'Enter Spotify Playlist Link'
         required>
     
-        <button type="submit" class="btn">Post Your Jam</button>
+        <button type="submit" class="jambtn">Post JamSesh</button>
 
     </div>
     </form>
 
-    <div class="backbtn">
+    <div class="bbtn">
     <a href="scrollingpage.html">
-        <button type="button" >Back to Scrolling</button></a>
+        <button class="backbtn" type="button" >Back to Scrolling</button></a>
     </div>
 </div>
 
