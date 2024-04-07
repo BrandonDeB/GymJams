@@ -50,21 +50,6 @@
         fetch("http://localhost:8080/api/get-current-user")
         .then((response)=>response.text())
         .then(response => {document.getElementById("username").innerHTML = response;})
-    //     var userReq = new XMLHttpRequest();
-    //         userReq.open("POST", "http://localhost:8080/api/get-current-user", true);
-    //         userReq.setRequestHeader('Content-Type', 'application/json');
-    //         userReq.send(JSON.stringify());
-
-    //     userReq.onreadystatechange = function () {
-    //     if (this.readyState != 4) return;
-
-    //     if (this.status == 200) {
-    //         var data = JSON.parse(this.responseText);
-    //         for(var i = 0; i < Object.keys(myObject).length; i++) {
-    //             document.getElementById("username").innerHTML = data.name;
-    //         }
-    //     }
-    // }
     }
 
 </script>
