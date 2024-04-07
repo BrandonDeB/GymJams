@@ -12,28 +12,37 @@
         //Pull exercises from backend
         const exercisesList = document.getElementById("js-content");
         for (let i = 0; i < workouts.length; i++) {
+            var workoutdiv = document.createElement("div");
+            workoutdiv.setAttribute("class", "workout");
             const image = await fetch("http://localhost:8080/api/get-playlist-picture?link="+workouts[i].playlistLink);
             const imageUrl = await image.text();
             console.log(image);
-            exercisesList.innerHTML += `
+            workoutdiv.innerHTML += `
             <h3>
-                    User: ${workouts[i].userName}
+                    User: ${workouts[i].userName}<br>
                     Date: ${workouts[i].date}, 
                     <br>
                     Playlist:
                     <br>
-                    <a href="${workouts[i].playlistLink}" target="_blank"><img src="${imageUrl}" alt="Playlist Cover" /><a/>
-            </h3>`;
+            </h3>
+            <a href="${workouts[i].playlistLink}" target="_blank"><img src="${imageUrl}" alt="Playlist Cover" width="30%" height="30%" /></a>`;
             arrOnly = workouts[i]["exercises"]
+            var table = document.createElement("table");
+            var header = document.createElement("tr");
+            header.innerHTML = '<th>Exercise</th><th>Weight</th><th>Reps</th><th>Sets</th>';
+            table.appendChild(header);
+            workoutdiv.appendChild(table);
             arrOnly.forEach(arrOnly => {
-                exercisesList.innerHTML += `
-                    <li>
-                        Exercise: ${arrOnly.name}, 
-                        Weight: ${arrOnly.weight}, 
-                        Reps: ${arrOnly.reps}, 
-                        Sets: ${arrOnly.sets}
-                    </li>`;
+                var row = document.createElement("tr");
+                row.innerHTML += `
+                        <td>${arrOnly.name}</td>
+                        <td>${arrOnly.weight}</td>
+                        <td>${arrOnly.reps}</td>
+                        <td>${arrOnly.sets}</td>
+                    `;
+                    table.appendChild(row)
             });
+            exercisesList.appendChild(workoutdiv);
         }
     }
     function retrieveUser() {
@@ -78,8 +87,6 @@
         <div class="movingbtn">
         <a href="addWorkout.html">
             <button type="button">Move to Workout</button></a>
-
-            <button type="button" onclick="retreivePost()">Next Post</button>
 
         <a href="profilepage.html">
             <button  type="button">Look at profile</button></a>

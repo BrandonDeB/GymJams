@@ -2,7 +2,6 @@
 *{
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
@@ -11,12 +10,11 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 90vh;
     background-size: cover;
     background-position: center;
 }
 
-.workout-holder{
+/* .workout-holder{
     height: 95vh;
     width: 200vh;
     margin-top: 1em;
@@ -25,18 +23,34 @@ body{
     gap: 1em;
     flex-direction: column;
     scroll-snap-type: y mandatory;
-}
+} */
 
 .workout-holder::-webkit-scrollbar{
     display: none;
 }
 
-.workout-holder .scroll{
+img {
+    width: 20rem;
+    height: 20rem;
+    object-fit: fill;
+}
+
+.workout { 
+    text-align: center;
+    padding:0;
+    margin:0;
+    left: 0;
+    background-color: gray;
+
+    width: 100%;
+    height: 100%;
+}
+
+/* .workout-holder .scroll{
     min-height: 75vh;
     min-width: 25vw;
-    background-color: gray;
     scroll-snap-align: start;
-}
+} */
 
 .movingbtn {
     position: fixed;
