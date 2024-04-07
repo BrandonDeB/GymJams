@@ -12,11 +12,17 @@
         //Pull exercises from backend
         const exercisesList = document.getElementById("js-content");
         for (let i = 0; i < workouts.length; i++) {
+            const image = await fetch("http://localhost:8080/api/get-playlist-picture?link="+workouts[i].playlistLink);
+            const imageUrl = await image.text();
+            console.log(image);
             exercisesList.innerHTML += `
             <h3>
                     User: ${workouts[i].userName}
                     Date: ${workouts[i].date}, 
-                    Playlist: ${workouts[i].playlistLink}
+                    <br>
+                    Playlist:
+                    <br>
+                    <a href="${workouts[i].playlistLink}" target="_blank"><img src="${imageUrl}" alt="Playlist Cover" /><a/>
             </h3>`;
             arrOnly = workouts[i]["exercises"]
             arrOnly.forEach(arrOnly => {

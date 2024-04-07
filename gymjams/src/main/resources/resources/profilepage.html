@@ -70,18 +70,18 @@ document.addEventListener("DOMContentLoaded", async function() {
 
 
 
-<form action="http://localhost:8080/api/add-friend.html" target = _self type="GET">
+<form action="http://localhost:8080/api/add-friend" target = _self type="GET">
 <div class="addfriend">
-    <input username ="username" type = "text" placeholder = "type friend's username" required>
+    <input name="name" type = "text" placeholder = "type friend's username" required>
 
         <button type="submit" >Add Friend</button>
 
     </div>
 </form>
 
-<form action="http://localhost:8080/api/remove-friend.html" target = _self type="GET">
+<form action="http://localhost:8080/api/remove-friend" target = _self type="GET">
     <div class="remfriend">
-        <input username ="username" type = "text" placeholder = "type friend's username" required>
+        <input name="name" type = "text" placeholder = "type friend's username" required>
     
             <button type="submit" >Remove Friend</button>
     
@@ -101,7 +101,9 @@ document.addEventListener("DOMContentLoaded", async function() {
 </div>
 
 <div class="logbtn">
-        <button type="button" onclick="logout()" >LogOut</button></a>
+    <form action="http://localhost:8080/api/logout" target = _self type="GET">
+        <button type="submit" >LogOut</button>
+    </form>
 </div>
 
 </body>
