@@ -9,18 +9,22 @@
 <script>
     function addWorkout() {
         var workout = document.createElement("input");
+        workout.name = "exercise";
         workout.type = "text";
         workout.placeholder = "Enter Workout";
 
         var reps = document.createElement("input");
+        reps.name = "reps";
         reps.type = "text";
         reps.placeholder = "Enter Number of Reps";
 
         var sets = document.createElement("input");
+        sets.name = "sets";
         sets.type = "text";
         sets.placeholder = "Enter Number of Sets";
 
         var weight = document.createElement("input");
+        weight.name = "weight";
         weight.type = "text";
         weight.placeholder = "Enter weight (in lbs)";
 
@@ -41,7 +45,7 @@
 <body>
 
     <div class= "wrapper">
-    <form id = 'workoutForm' action="http://localhost:8080/api/login" target = _self>
+    <form id = 'workoutForm' action="http://localhost:8080/api/add-user-workout" target = _self>
         <h2>Add your workouts here</h2>
     <div id="textBoxContainer">
         <!-- Text boxes will be added here -->
@@ -49,7 +53,7 @@
     <button type="button" onclick="addWorkout()">Add Workout</button>
     
     <div class = 'input-box'>
-        <input type = 'text' placeholder = 'Spotify Playlist Link'
+        <input name="link" type = 'text' placeholder = 'Spotify Playlist Link'
         required>
     
         <button type="submit" class="btn">Post Your Jam</button>

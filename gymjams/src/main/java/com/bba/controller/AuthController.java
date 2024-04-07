@@ -66,8 +66,12 @@ public class AuthController {
 
     @GetMapping(value="get-current-user")
     public String currentUser(HttpSession session){
-        System.out.println((String) session.getAttribute("name"));
-        return (String) session.getAttribute("name").toString();
+        System.out.println((String) session.getAttribute("username"));
+        if (((String) session.getAttribute("username")).equals("")) { 
+            return "User not found";   
+        } else {
+            return (String) session.getAttribute("username");
+        }
     }
     
     @GetMapping(value = "get-user-exercises")
@@ -77,13 +81,29 @@ public class AuthController {
     }
 
     @GetMapping(value = "add-user-workout")
-    public ArrayList<Exercise> addUserExercises(@RequestParam("reps") String reps, @RequestParam("sets") String sets, @RequestParam("exercise") String exercise, @RequestParam("sets") String weight, @RequestParam("link") String link, @RequestParam("name") String name, HttpSession session) {
-        if (logins.containsKey(session.getAttribute("username")) && logins.get(name).equals(session.getAttribute("password"))) {
-            userMap.put(name, new WorkoutUser());
-            userMap.get(name).exercises.add(new Exercise(exercise, Integer.parseInt(weight), Integer.parseInt(reps), Integer.parseInt(sets), new Date(), link));
-            return userMap.get(name).exercises;
+    public String addUserExercises(@RequestParam("reps") String reps, @RequestParam("sets") String sets, @RequestParam("exercise") String exercise, @RequestParam("weight") String weight, @RequestParam("link") String link, HttpSession session, HttpServletResponse response) {
+        
+        String currentUser = (String) session.getAttribute("username");
+        System.out.println(reps + sets + exercise + weight + currentUser + link);
+        String[] rep = reps.split(",");
+        String[] set = sets.split(",");
+        String[] exer = exercise.split(",");
+        String[] weigh = weight.split(",");;
+        for(int i = 0; i < rep.length; i++) {
+                if (!userMap.containsKey(currentUser)) {
+                    userMap.put(currentUser, new WorkoutUser(new ArrayList<Exercise>()));
+                }
+                userMap.get(currentUser)
+                    .addExercise(new Exercise(exer[i], Integer.parseInt(weigh[i]), Integer.parseInt(rep[i]), Integer.parseInt(set[i]), new Date(), link));
+                System.out.println("Adding exercise" + new Date().toString());
         }
-        return new ArrayList<Exercise>();
+        try {
+            response.sendRedirect("http://localhost:8080/profilepage.html");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return currentUser;
         //return userMap.get("").exercises;
     }
 }

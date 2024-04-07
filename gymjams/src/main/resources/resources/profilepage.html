@@ -10,12 +10,17 @@
 //When the page is opened
 document.addEventListener("DOMContentLoaded", async function() {
     try {
-        const response = await fetch("/exercises");
+        const response = await fetch("http://localhost:8080/get-user-exercises");
         const exercises = await response.json();
+
+        const userfetch = await fetch("http://localhost:8080/get-current-user");
+        const user = await userfetch.text;
 
         //Pull Username from backend
         const usernameElement = document.getElementById("username");
-        usernameElement.textContent = exerciseData.username;
+        usernameElement.textContent = user;
+
+        console.log(exercises);
         
         //Pull exercises from backend
         const exercisesList = document.getElementById("exercisesList");
