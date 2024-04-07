@@ -15,11 +15,14 @@
 </head>
 
 <script>
-    function addWorkout() {
+    let counter = 0;
+
+    function addExercise() {
+        counter++;
         var workout = document.createElement("input");
         workout.name = "exercise";
         workout.type = "text";
-        workout.placeholder = "Enter Workout";
+        workout.placeholder = "Enter Exercise";
 
         var reps = document.createElement("input");
         reps.name = "reps";
@@ -38,6 +41,9 @@
 
         var container = document.createElement("div");
 
+    var id = "exercise" + counter;
+    container.id = id; 
+
         container.appendChild(workout);
         container.appendChild(reps);
         container.appendChild(weight);
@@ -45,6 +51,15 @@
 
         var mainContainer = document.getElementById("textBoxContainer");
             mainContainer.appendChild(container);
+
+    }
+
+    function remExercise(id){
+    counter--;
+    var container = document.getElementById(id);
+    if (container) {
+        container.remove();
+    }
 
     }
 
@@ -58,8 +73,8 @@
     <div id="textBoxContainer">
         <!-- Text boxes will be added here -->
     </div>
-    <button type="button" onclick="addWorkout()">Add Workout</button>
-    
+    <button type="button" onclick="addExercise()">Add Exercise</button>
+    <button type="button" onclick="remExercise('exercise' + counter)">Remove Exercise</button>
     <div class = 'input-box'>
         <input name="link" type = 'text' placeholder = 'Spotify Playlist Link'
         required>
