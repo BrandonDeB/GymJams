@@ -4,14 +4,16 @@ import java.util.ArrayList;
 
 public class WorkoutUser {
 
-    public ArrayList<Exercise> exercises;
+    public ArrayList<Workout> workout;
+    public ArrayList<String> friends;
 
-    public WorkoutUser(ArrayList<Exercise> e) {
-        exercises = e;
+    public WorkoutUser(ArrayList<Workout> e) {
+        workout = e;
+        friends = new ArrayList<String>();
     }
 
-    public ArrayList<Exercise> addExercise(Exercise e) {
-        exercises.add(e);
-        return exercises;
+    public void addWorkout(Workout e) {
+        workout.add(e);
     }
+
 }
