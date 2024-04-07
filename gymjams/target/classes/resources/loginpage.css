@@ -39,7 +39,7 @@ body{
 .wrapper h2{
     font-size: 20px;
     color: rgb(0, 0, 0);
-    
+    text-decoration: underline;
     margin-bottom: 5px;
 }
 

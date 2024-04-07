@@ -6,6 +6,101 @@
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
+body{
+    display: flex;
+}
+
+.wrapper{
+    width: 430px;
+    height: 593px;
+    padding-left: 2px;
+    background: rgb(238, 121, 117);
+    border:2px solid maroon;
+    padding: 10px 20px;
+
+}
+
+.wrapper .addfriend{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+
+}
+
+.wrapper .addfriend input{
+    width: 200px;
+    height: 100%;
+    background: white;
+    border: none;
+    outline:none;
+    border: 2px solid black;
+    border-radius: 20px;
+    padding: 20px 45px 20px 20px;
+}
+
+.wrapper .addfriend button{
+    width: 110px;
+    height: 59.6px;
+    background: rgb(255, 255, 255);
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    cursor: pointer;
+}
+
+.wrapper .remfriend{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+
+}
+
+.wrapper .remfriend input{
+    width: 200px;
+    height: 100%;
+    background: white;
+    border: none;
+    outline:none;
+    border: 2px solid black;
+    border-radius: 20px;
+    padding: 20px 45px 20px 20px;
+}
+
+.wrapper .remfriend button{
+    width: 110px;
+    height: 59.6px;
+    background: rgb(255, 255, 255);
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    cursor: pointer;
+}
+
+.jamwrapper{
+    width: 100%;
+    height: 593px;
+    background: burlywood;
+    border:2px solid maroon;
+    justify-content: center;
+    align-items: center;
+}
+
+.jamwrapper h2{
+    text-decoration: underline;
+    align-items: left;
+    padding-left: 20px;
+}
+
+.jamwrapper ul{
+
+    align-items: left;
+    padding-left: 20px;
+}
+
 .wrapper img{
     width: 80px;
     height: 80px;
@@ -14,10 +109,26 @@
 .backbtn button{
     position:absolute;
     bottom:0;
+    width: 80px;
+    height: 45px;
+    background: rgb(255, 255, 255);
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    cursor: pointer;
+    margin-bottom: 20px;
 }
 
 .logbtn button{
     position:absolute;
     bottom:0;
     margin-left: 200px;
+    width: 80px;
+    height: 45px;
+    background: rgb(255, 255, 255);
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    cursor: pointer;
+    margin-bottom: 20px;
 }

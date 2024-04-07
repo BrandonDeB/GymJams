@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         const exercisesList = document.getElementById("exercisesList");
         for (let i = 0; i < workouts.length; i++) {
             exercisesList.innerHTML += `
-            <h3>
+            <br><h3>
                     Date: ${workouts[i].date}, 
                     Playlist: ${workouts[i].playlistLink}
             </h3>`;
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
 <form action="http://localhost:8080/api/add-friend" target = _self type="GET">
 <div class="addfriend">
-    <input name="name" type = "text" placeholder = "type friend's username" required>
+    <input name="name" type = "text" placeholder = "type a username" required>
 
         <button type="submit" >Add Friend</button>
 
@@ -75,22 +75,24 @@ document.addEventListener("DOMContentLoaded", async function() {
         </div>
     </form>
 
-    <h2>Previous Jam-Seshs</h2>
-
-    <ul id="exercisesList">
-        <!-- the exercises should pop out after this-->
-    </ul>
-
     <div class="backbtn">
         <a href="scrollingpage.html">
             <button type="button" >Back to Scrolling</button></a>
         </div>
-</div>
 
 <div class="logbtn">
     <form action="http://localhost:8080/api/logout" target = _self type="GET">
         <button type="submit" >LogOut</button>
     </form>
+</div>
+</div>
+
+<div class="jamwrapper">
+<h2>Previous Jam-Sesh:</h2>
+
+    <ul id="exercisesList">
+        <!-- the exercises should pop out after this-->
+    </ul>
 </div>
 
 </body>
