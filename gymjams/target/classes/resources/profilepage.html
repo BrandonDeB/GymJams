@@ -22,27 +22,31 @@ document.addEventListener("DOMContentLoaded", async function() {
         const user = await userfetch.text();
 
         const response = await fetch("http://localhost:8080/api/get-user-exercises?name="+user);
-        const exercises = await response.json();
+        const workouts = await response.json();
 
         //Pull Username from backend
         const usernameElement = document.getElementById("username");
         usernameElement.textContent = user;
-
-        console.log(exercises);
         
         //Pull exercises from backend
         const exercisesList = document.getElementById("exercisesList");
-        exercises.forEach(exercise => {
+        for (let i = 0; i < workouts.length; i++) {
             exercisesList.innerHTML += `
-                <li>
-                    Exercise: ${exercise.name}, 
-                    Weight: ${exercise.weight}, 
-                    Reps: ${exercise.reps}, 
-                    Sets: ${exercise.sets}, 
-                    Date: ${exercise.date}, 
-                    Playlist: ${exercise.playlistLink}
-                </li>`;
-        });
+            <h3>
+                    Date: ${workouts[i].date}, 
+                    Playlist: ${workouts[i].playlistLink}
+            </h3>`;
+            arrOnly = workouts[i]["exercises"]
+            arrOnly.forEach(arrOnly => {
+                exercisesList.innerHTML += `
+                    <li>
+                        Exercise: ${arrOnly.name}, 
+                        Weight: ${arrOnly.weight}, 
+                        Reps: ${arrOnly.reps}, 
+                        Sets: ${arrOnly.sets}
+                    </li>`;
+            });
+        }
     } catch (error) {
         console.error("Error fetching exercises:", error);
     }
