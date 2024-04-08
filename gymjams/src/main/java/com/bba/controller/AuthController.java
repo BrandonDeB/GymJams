@@ -6,10 +6,15 @@ import jakarta.servlet.http.HttpSession;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.SpotifyHttpManager;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
+import se.michaelthelin.spotify.model_objects.credentials.AuthorizationCodeCredentials;
 import se.michaelthelin.spotify.model_objects.credentials.ClientCredentials;
-import se.michaelthelin.spotify.model_objects.specification.Image;
+import se.michaelthelin.spotify.model_objects.specification.User;
+import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
+import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
 import se.michaelthelin.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
 import se.michaelthelin.spotify.requests.data.playlists.GetPlaylistCoverImageRequest;
+import se.michaelthelin.spotify.requests.data.users_profile.GetCurrentUsersProfileRequest;
+import se.michaelthelin.spotify.requests.data.users_profile.GetUsersProfileRequest;
 
 import java.io.IOException;
 import java.net.URI;
@@ -17,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
 
 @RestController
@@ -28,12 +32,12 @@ public class AuthController {
     public static HashMap<String, WorkoutUser> userMap;
     public static HashMap<String, String> logins;
 
-    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://localhost:8080/api/get-user-code/");
+    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://localhost:8080/api/spotify-login");
     public String code ;
 
     public static final SpotifyApi spotifyApi = new SpotifyApi.Builder()
-    .setClientId("4d91a8e4e33e49dcbe28617ca77b01b7")
-    .setClientSecret("54e05bf910e142d8b0bfe73614bd7c46")
+    .setClientId("")
+    .setClientSecret("")
     .setRedirectUri(redirectUri)
     .build();
     private static final ClientCredentialsRequest clientCredentialsRequest = spotifyApi.clientCredentials().build();;
@@ -48,81 +52,111 @@ public class AuthController {
             clientCredentials = clientCredentialsRequest.execute();
             spotifyApi.setAccessToken(clientCredentials.getAccessToken());
         } catch (ParseException | SpotifyWebApiException | IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    @GetMapping(value="/spotify-login")
+    public String spotifyLogin(@RequestParam("code") String code, HttpSession session, HttpServletResponse response) throws IOException{
+        AuthorizationCodeRequest request = spotifyApi.authorizationCode(code).build();
+        AuthorizationCodeCredentials credentials;
+        try {
+            credentials = request.execute();
+            
+            spotifyApi.setAccessToken(credentials.getAccessToken());
+            spotifyApi.setRefreshToken(credentials.getRefreshToken());
+            if (!userMap.containsKey(getCurrentId())) {
+                userMap.put(getCurrentId(), new WorkoutUser(new ArrayList<Workout>()));
+            }
+        } catch (ParseException | SpotifyWebApiException | IOException e) {
+            e.printStackTrace();
+        }
+        response.sendRedirect("http://localhost:8080/profilepage.html");
+        return "Temp";
+    }
+
+    @GetMapping(value="/spotify-login-link")
+    public String spotifyLoginLink(HttpSession session, HttpServletResponse response) throws IOException{
+        AuthorizationCodeUriRequest request = spotifyApi.authorizationCodeUri().scope("user-read-email, user-follow-read").show_dialog(true).build();
+        final URI uri = request.execute();
+        response.sendRedirect(uri.toString());
+        return uri.toString();
     }
  
-    @GetMapping(value="/login")
-    public String login(@RequestParam("name") String name, @RequestParam("password") String password, HttpSession session, HttpServletResponse response){
-        if(logins.containsKey(name)) {
-            if (logins.get(name).equals(password)) {
-                session.setAttribute("username", name);
-                session.setAttribute("password", password);
-                try {
-                    response.sendRedirect("http://localhost:8080/scrollingpage.html");
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                return logins.get(name);
-            } else {return "loginFailed";}
-        } else {
-            try {
-                response.sendRedirect("http://localhost:8080/loginpage.html");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return "Username does not exist";
-        }
-    }
+    // @GetMapping(value="/login")
+    // public String login(@RequestParam("name") String name, @RequestParam("password") String password, HttpSession session, HttpServletResponse response){
+    //     if(logins.containsKey(name)) {
+    //         if (logins.get(name).equals(password)) {
+    //             session.setAttribute("username", name);
+    //             session.setAttribute("password", password);
+    //             try {
+    //                 response.sendRedirect("http://localhost:8080/scrollingpage.html");
+    //             } catch (IOException e) {
+    //                 // TODO Auto-generated catch block
+    //                 e.printStackTrace();
+    //             }
+    //             return logins.get(name);
+    //         } else {return "loginFailed";}
+    //     } else {
+    //         try {
+    //             response.sendRedirect("http://localhost:8080/loginpage.html");
+    //         } catch (IOException e) {
+    //             e.printStackTrace();
+    //         }
+    //         return "Username does not exist";
+    //     }
+    // }
 
     @GetMapping(value="/logout")
-    public String logout(HttpSession session, HttpServletResponse response){
-        session.removeAttribute("username");
-        session.removeAttribute("password");
-        try {
-            response.sendRedirect("http://localhost:8080/loginpage.html");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "Success";
+    public String logout(HttpSession session, HttpServletResponse response) throws IOException{
+        spotifyApi.setAccessToken("");
+        spotifyApi.setRefreshToken("");
+        response.sendRedirect("http://localhost:8080/loginpage.html");
+        return "done";
     }
 
-    @GetMapping(value="/signup")
-    public String signup(@RequestParam("name") String name, @RequestParam("password") String password, HttpServletResponse response) {
-        if (logins.containsKey(name)) {
-            try {
-                response.sendRedirect("http://localhost:8080/loginpage.html");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return "Account Already Exists";
-        } else { 
-            try {
-                logins.put(name, password);
-                userMap.put(name, new WorkoutUser(new ArrayList<Workout>()));
-                response.sendRedirect("http://localhost:8080/loginpage.html");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return "success";
+    @GetMapping(value="/get-profile-picture") 
+    public String getProfilePicture(HttpSession session, HttpServletResponse response) throws IOException{
+        GetUsersProfileRequest profileReq = spotifyApi.getUsersProfile(getCurrentId()).build();
+        User user;
+        try {
+            user = profileReq.execute();
+            return user.getImages()[0].getUrl();
+        } catch (ParseException | SpotifyWebApiException | IOException e) {
+            e.printStackTrace();
         }
+        return "";
     }
+
+    // @GetMapping(value="/signup")
+    // public String signup(@RequestParam("name") String name, @RequestParam("password") String password, HttpServletResponse response) {
+    //     if (logins.containsKey(name)) {
+    //         try {
+    //             response.sendRedirect("http://localhost:8080/loginpage.html");
+    //         } catch (IOException e) {
+    //             e.printStackTrace();
+    //         }
+    //         return "Account Already Exists";
+    //     } else { 
+    //         try {
+    //             logins.put(name, password);
+    //             userMap.put(name, new WorkoutUser(new ArrayList<Workout>()));
+    //             response.sendRedirect("http://localhost:8080/loginpage.html");
+    //         } catch (IOException e) {
+    //             e.printStackTrace();
+    //         }
+    //         return "success";
+    //     }
+    // }
 
     @GetMapping(value="get-current-user")
     public String currentUser(HttpSession session){
-        System.out.println((String) session.getAttribute("username"));
-        if (((String) session.getAttribute("username")).equals("")) { 
-            return "User not found";   
-        } else {
-            return (String) session.getAttribute("username");
-        }
+        return getCurrentDisplayName();
     }
     
     @GetMapping(value = "get-user-exercises")
-    public ArrayList<Workout> getUserExercises(@RequestParam("name") String name) {
-        ArrayList<Workout> list = userMap.get(name).workout;
+    public ArrayList<Workout> getUserExercises() {
+        ArrayList<Workout> list = userMap.get(getCurrentId()).workout;
         return list;
     }
 
@@ -138,7 +172,7 @@ public class AuthController {
     @GetMapping(value = "add-user-workout")
     public String addUserExercises(@RequestParam("reps") String reps, @RequestParam("sets") String sets, @RequestParam("exercise") String exercise, @RequestParam("weight") String weight, @RequestParam("link") String link, HttpSession session, HttpServletResponse response) {
         
-        String currentUser = (String) session.getAttribute("username");
+        String currentUser = getCurrentId();
         System.out.println(reps + sets + exercise + weight + currentUser + link);
         String[] rep = reps.split(",");
         String[] set = sets.split(",");
@@ -161,7 +195,7 @@ public class AuthController {
 
     @GetMapping(value = "add-friend")
     public String addFriend(@RequestParam("name") String name, HttpSession session, HttpServletResponse response) {
-        String currentUser = (String) session.getAttribute("username");
+        String currentUser = getCurrentId();
         userMap.get(currentUser).friends.add(name);
         try {
             response.sendRedirect("http://localhost:8080/profilepage.html");
@@ -173,7 +207,7 @@ public class AuthController {
 
     @GetMapping(value = "remove-friend")
     public String removeFriend(@RequestParam("name") String name, HttpSession session, HttpServletResponse response) {
-        String currentUser = (String) session.getAttribute("username");
+        String currentUser = getCurrentId();
         userMap.get(currentUser).friends.remove(name);
         try {
             response.sendRedirect("http://localhost:8080/profilepage.html");
@@ -186,7 +220,7 @@ public class AuthController {
     @GetMapping(value = "get-next-post")
     public ArrayList<Workout> nextPost(HttpSession session, HttpServletResponse response) {
             ArrayList<Workout> allFriends = new ArrayList<>();
-            String currentUser = (String) session.getAttribute("username");
+            String currentUser = getCurrentId();
             if (userMap.containsKey(currentUser)) {
                 for (String friend : userMap.get(currentUser).friends) {
                     if(userMap.containsKey(friend)) {
@@ -195,8 +229,6 @@ public class AuthController {
                         }
                     }
                 }
-                
-                System.out.println(currentUser);
                 allFriends.addAll(userMap.get(currentUser).workout);
                 Collections.sort(allFriends, new Comparator<Workout>() {
                     public int compare(Workout o1, Workout o2) {
@@ -206,5 +238,29 @@ public class AuthController {
             }
 
         return allFriends;
+    }
+
+    private String getCurrentDisplayName(){
+        GetCurrentUsersProfileRequest profileReq = spotifyApi.getCurrentUsersProfile().build();
+        User user;
+        try {
+            user = profileReq.execute();
+            return user.getDisplayName();
+        } catch (ParseException | SpotifyWebApiException | IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    private String getCurrentId(){
+        GetCurrentUsersProfileRequest profileReq = spotifyApi.getCurrentUsersProfile().build();
+        User user;
+        try {
+            user = profileReq.execute();
+            return user.getId();
+        } catch (ParseException | SpotifyWebApiException | IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }

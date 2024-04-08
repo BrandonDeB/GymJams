@@ -18,6 +18,12 @@ document.addEventListener("DOMContentLoaded", async function() {
         const response = await fetch("http://localhost:8080/api/get-user-exercises?name="+user);
         const workouts = await response.json();
 
+        const image = await fetch("http://localhost:8080/api/get-profile-picture");
+        const imageUrl = await image.text();
+
+        const imgHolder = document.getElementById("profile-pic");
+        imgHolder.setAttribute("src", imageUrl);
+
         //Pull Username from backend
         const usernameElement = document.getElementById("username");
         usernameElement.textContent = user;
@@ -51,8 +57,10 @@ document.addEventListener("DOMContentLoaded", async function() {
 
 <body>
 <div class = "wrapper">
-    <img src="https://cdn-icons-png.freepik.com/256/552/552848.png">
-<h3 id = "username"></h3>
+    <div class="user-info">
+        <img id = "profile-pic">
+        <h3 id = "username"></h3>
+    </div>
 <!--Should hopefully put out a usrename-->
 
 
@@ -88,7 +96,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 </div>
 
 <div class="jamwrapper">
-<h2>Previous Jam-Sesh:</h2>
+<h2 id="previous">Previous Jam-Sesh:</h2>
 
     <ul id="exercisesList">
         <!-- the exercises should pop out after this-->

@@ -12,12 +12,29 @@ body{
 
 .wrapper{
     width: 430px;
-    height: 593px;
+    height: 100vh;
     padding-left: 2px;
-    background: rgb(238, 121, 117);
-    border:2px solid maroon;
+    background: rgb(86, 95, 89);
     padding: 10px 20px;
+    color: white;
 
+}
+
+.user-info {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#username {
+    padding: 3rem;
+    text-decoration: underline;
+}
+
+#profile-pic {
+    border-radius: 50%;
+    border: 2px solid rgb(0,0,0);
 }
 
 .wrapper .addfriend{
@@ -82,11 +99,11 @@ body{
 
 .jamwrapper{
     width: 100%;
-    height: 593px;
-    background: burlywood;
-    border:2px solid maroon;
+    height: 100vh;
+    background: rgb(7, 30, 34);
     justify-content: center;
     align-items: center;
+    color: white;
 }
 
 .jamwrapper h2{

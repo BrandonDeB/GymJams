@@ -10,36 +10,12 @@
 <body>
 
     <div class= "wrapper">
-        <form action="http://localhost:8080/api/login" target = _self type="GET">
+        <form action="http://localhost:8080/api/spotify-login-link" target = _self type="GET">
             <h1>GymJams</h1>
             <h2>Login:</h2>
-            <div class = 'input-box'>
-                <input name ="name" type = "text" placeholder = 'Username' required>
-            </div>
 
-            <div class = 'input-box'>
-                <input type ='password' name="password" type = "text" placeholder = 'Password'
-                required>
-            </div>
+            <button type="submit" class="btn">Login to Spotify</button>
 
-            <button type="submit" class="btn">Login</button>
-
-        </form>
-        
-
-        
-        <form action="http://localhost:8080/api/signup" target = _self type="GET">
-            <h2>Sign Up:</h2>
-            <div class = 'input-box'>
-                <input name = 'name' type = 'text' placeholder = 'Username'
-                required>
-
-            <div class = 'input-box'>
-                <input type ='password' name = 'password' type = 'text' placeholder = 'Password'
-                required>
-            </div>
-            
-            <button type="submit" class="btn">SignUp</button>
         </form>
     </div>
 
