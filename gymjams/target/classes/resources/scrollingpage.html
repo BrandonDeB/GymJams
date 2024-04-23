@@ -2,6 +2,7 @@
 <html lang ="en">
 <script src="https://code.jquery.com/jquery-1.9.1.js"></script>
 <script>
+    let counter = 0;
     $(document).ready(
         retreivePost());
     async function retreivePost() {
@@ -14,18 +15,20 @@
         for (let i = 0; i < workouts.length; i++) {
             var workoutdiv = document.createElement("div");
             workoutdiv.setAttribute("class", "workout");
+            workoutdiv.setAttribute("hidden", "true");
             const image = await fetch("http://localhost:8080/api/get-playlist-picture?link="+workouts[i].playlistLink);
             const imageUrl = await image.text();
+            const preview = await fetch("http://localhost:8080/api/random-song?link="+workouts[i].playlistLink);
+            const previewUrl = await preview.text();
             console.log(image);
             workoutdiv.innerHTML += `
-            <h3>
-                    User: ${workouts[i].userName}<br>
-                    Date: ${workouts[i].date}, 
-                    <br>
-                    Playlist:
-                    <br>
-            </h3>
-            <a href="${workouts[i].playlistLink}" target="_blank"><img src="${imageUrl}" alt="Playlist Cover" width="30%" height="30%" /></a>`;
+                <h1>User: ${workouts[i].userName}</h1>
+                <h1>Date: ${workouts[i].date}</h1>
+                <h1>Playlist:</h1>
+            <div class="workout-preview">
+            <a href="${workouts[i].playlistLink}" target="_blank"><img src="${imageUrl}" alt="Playlist Cover" width="50%" height="50%" /></a><br>
+            <audio controls loop autoplay src="${previewUrl}" />
+            </div>`;
             arrOnly = workouts[i]["exercises"]
             var table = document.createElement("table");
             var header = document.createElement("tr");
@@ -44,6 +47,7 @@
             });
             exercisesList.appendChild(workoutdiv);
         }
+        nextPost();
     }
     function retrieveUser() {
 
@@ -66,6 +70,22 @@
     //     }
     // }
     }
+    function nextPost() {
+        var workouts = document.getElementsByClassName("workout");
+        var audios = document.getElementsByTagName("audio"); 
+        console.log(workouts);
+        console.log(workouts[1]);
+        for (var i=0; i < workouts.length; i++) {
+            workouts[i].style.display = 'none';
+            audios[i].pause();
+        }
+        workouts[counter].style.display = 'block';
+        audios[counter].play();
+        counter++;
+        if (counter >= workouts.length) {
+            counter =0;
+        }
+    }
 
 </script>
 <head>
@@ -85,16 +105,16 @@
         </div>
     </div>
         <div class="movingbtn">
-        <a href="addWorkout.html">
-            <button type="button">Move to Workout</button></a>
+            <a href="addWorkout.html">
+                <button type="button">Move to Workout</button></a>
 
+            <button class="nextpost" type="button" onclick="nextPost()">Next Post</button>
 
-        <a href="profilepage.html">
-            <button  type="button">Look at profile</button></a>
+            <a href="profilepage.html">
+                <button  type="button">Look at profile</button></a>
         </div>
 
     </div>
-
 
 </body>
 

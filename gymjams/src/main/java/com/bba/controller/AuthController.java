@@ -8,11 +8,15 @@ import se.michaelthelin.spotify.SpotifyHttpManager;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.credentials.AuthorizationCodeCredentials;
 import se.michaelthelin.spotify.model_objects.credentials.ClientCredentials;
+import se.michaelthelin.spotify.model_objects.specification.Playlist;
+import se.michaelthelin.spotify.model_objects.specification.Track;
 import se.michaelthelin.spotify.model_objects.specification.User;
 import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
 import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
 import se.michaelthelin.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
 import se.michaelthelin.spotify.requests.data.playlists.GetPlaylistCoverImageRequest;
+import se.michaelthelin.spotify.requests.data.playlists.GetPlaylistRequest;
+import se.michaelthelin.spotify.requests.data.tracks.GetTrackRequest;
 import se.michaelthelin.spotify.requests.data.users_profile.GetCurrentUsersProfileRequest;
 import se.michaelthelin.spotify.requests.data.users_profile.GetUsersProfileRequest;
 
@@ -23,6 +27,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.concurrent.ThreadLocalRandom;
 
 @RestController
 @RequestMapping("/api")
@@ -81,6 +86,38 @@ public class AuthController {
         final URI uri = request.execute();
         response.sendRedirect(uri.toString());
         return uri.toString();
+    }
+
+    @GetMapping(value="/audio-preview")
+    public String audioPreview(@RequestParam("id") String id, HttpSession session, HttpServletResponse response) throws IOException{
+        GetTrackRequest trackReq = spotifyApi.getTrack(id).build();
+        try {
+            Track track = trackReq.execute();
+            return track.getPreviewUrl();
+        } catch (ParseException | SpotifyWebApiException | IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    @GetMapping(value="/random-song")
+    public String randomSong(@RequestParam("link") String link, HttpSession session, HttpServletResponse response) throws IOException{
+        link = link.replace("https://open.spotify.com/playlist/", "");
+        link = link.substring(0, link.indexOf("?"));
+        GetPlaylistRequest playlistReq = spotifyApi.getPlaylist(link).build();
+        try {
+            Playlist playlist = playlistReq.execute();
+            int random = ThreadLocalRandom.current().nextInt(0, playlist.getTracks().getItems().length);
+            String id = playlist.getTracks().getItems()[random].getTrack().getId();
+            GetTrackRequest trackReq = spotifyApi.getTrack(id).build();
+            Track track = trackReq.execute();
+            return track.getPreviewUrl();
+        } catch (ParseException | SpotifyWebApiException | IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return "";
     }
  
     // @GetMapping(value="/login")
