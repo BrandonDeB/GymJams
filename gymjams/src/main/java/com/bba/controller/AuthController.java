@@ -41,8 +41,8 @@ public class AuthController {
     public String code ;
 
     public static final SpotifyApi spotifyApi = new SpotifyApi.Builder()
-    .setClientId("7c4977f8f9ec4dbb9c4d96b3c5fa7a51")
-    .setClientSecret("26310c75278b4be4bf7f794384c60dbb")
+    .setClientId("")
+    .setClientSecret("")
     .setRedirectUri(redirectUri)
     .build();
     private static final ClientCredentialsRequest clientCredentialsRequest = spotifyApi.clientCredentials().build();;
