@@ -9,7 +9,7 @@
 body {
     display: flex;
     justify-content: center;
-    background: rgb(238, 121, 117);
+    background: rgb(7, 30, 34);
     align-items: center;
     min-height: 90vh;
     background-position: center;
@@ -20,7 +20,7 @@ body {
 .wrapper {
     width: 1200px;
     height: 540px;
-    background: burlywood;
+    background: rgb(86, 95, 89);
     border: 2px solid rgb(0, 0, 0);
     backdrop-filter: blur(20px);
     box-shadow: 0 0 10px black;

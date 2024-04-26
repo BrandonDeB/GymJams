@@ -11,6 +11,10 @@
     let counter = 0;
 
     function addExercise() {
+        if(counter > 6){
+            alert('you cant add any more');
+            return;
+        }
         counter++;
         var workout = document.createElement("input");
         workout.name = "exercise";

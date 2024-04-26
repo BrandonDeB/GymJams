@@ -25,9 +25,11 @@
                 <h1>User: ${workouts[i].userName}</h1>
                 <h1>Date: ${workouts[i].date}</h1>
                 <h1>Playlist:</h1>
+            <div class= "workout-back">
             <div class="workout-preview">
             <a href="${workouts[i].playlistLink}" target="_blank"><img src="${imageUrl}" alt="Playlist Cover" width="50%" height="50%" /></a><br>
             <audio controls loop autoplay src="${previewUrl}" />
+            </div>
             </div>`;
             arrOnly = workouts[i]["exercises"]
             var table = document.createElement("table");
